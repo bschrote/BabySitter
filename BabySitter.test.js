@@ -1,3 +1,4 @@
+const { default: expect } = require('expect')
 const BabySitter = require ('./BabySitter')
 
 describe ('Total Earnings', () =>{
@@ -66,4 +67,49 @@ describe ('Total Earnings', () =>{
 
         expect(Index).toEqual("Can Not work later than 4AM!")
     })
+    it ('Start 9pm, Bed 8pm, Quit 4am', () => {
+        let Index = BabySitter (21,20,4)
+
+        expect(Index).toEqual("88")
+    })
+    it ('Start 5pm, Bed 8pm, Quit 11pm', () => {
+        let Index = BabySitter (17,20,23)
+
+        expect(Index).toEqual("60")
+    })
+    it ('Start 5pm, Bed 9pm, Quit 8pm', () => {
+        let Index = BabySitter (17,21,20)
+
+        expect(Index).toEqual("36")
+    })
+    it ('Start 9pm, Bed 8pm, Quit 11pm', () => {
+        let Index = BabySitter (21,20,23)
+
+        expect(Index).toEqual("16")
+    })
+    it ('Start 1am, Bed 8pm, Quit 4am', () => {
+        let Index = BabySitter (1,20,4)
+
+        expect(Index).toEqual("48")
+    })
+    it ('Start 5pm, Bed 1am, Quit 4am', () => {
+        let Index = BabySitter (17,1,4)
+
+        expect(Index).toEqual("148")
+    })
+    it ('Start 1am, Bed 2am, Quit 4am', () => {
+        let Index = BabySitter (1,2,4)
+
+        expect(Index).toEqual("48")
+    })
+   it ('Start 2am, Bed 1am, Quit 4am', () => {
+        let Index = BabySitter (2,1,4)
+
+        expect(Index).toEqual("32")
+    })
+    it ('Start 5pm, Bed 1am, Quit 11pm', () => {
+        let Index = BabySitter (17,1,23)
+
+        expect(Index).toEqual("72")
+    })  
 })
