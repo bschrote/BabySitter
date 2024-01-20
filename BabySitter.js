@@ -13,7 +13,7 @@ function BabySitter (Start,Bed,Quit ) {
         ClockIn: Start,
         BedTime: Bed,
         Midnight: 24,
-        Clockout: Quit
+        Clockout: Quit 
     
 
     }
@@ -24,57 +24,36 @@ function BabySitter (Start,Bed,Quit ) {
     
     }
     
-    const ClockIn = Math.round(time.ClockIn)
+    const ClockIn = Math.round(time.ClockIn) 
     const Clockout = Math.round(time.Clockout)
-    const BedTime = Math.round(time.BedTime)
+    const BedTime = Math.round(time.BedTime) 
 
-    if((ClockIn < ("17")) && (ClockIn > 4)) 
+    let BeforeBed;
+    let  HrsAsleepBeforeMidnight;
+    let HrsAfterMidnight;
+
+    if(ClockIn < 17) 
         return ("Can Not ClockIn before 5PM!")
      
-    else if ((Clockout > "4") && (Clockout < "12")) 
+    else if (Clockout > 28) 
         return ("Can Not work later than 4AM!")
- 
-    let BeforeBed;
-    if (((ClockIn < BedTime) && (ClockIn > 4)) && ((Clockout > BedTime) || (Clockout < 5))) {
-         BeforeBed = BedTime - ClockIn}
     
-    else if(((BedTime < 4) && (ClockIn > 4) && (Clockout > 4)) || ((Clockout < BedTime) && (Clockout >= 5) && (BedTime > 4))) {
-        BeforeBed = Clockout - ClockIn
-    }     
-    else if ((BedTime < 4) && (ClockIn >= 17) && (Clockout <= 4)) {
-        BeforeBed = time.Midnight - ClockIn
-    }
-    else if ((ClockIn > BedTime) && (BedTime > 4) || (ClockIn < 5)) {
-        BeforeBed = 0
-    }
-    const HrsBeforeBed = Math.round(BeforeBed) 
-    let  HrsAsleepBeforeMidnight;
-          
-    if ((ClockIn < 5) || ((Clockout < BedTime) && (Clockout > 5)) || (BedTime < 4)){
-         HrsAsleepBeforeMidnight = 0; 
-    }
-    else if ((ClockIn > BedTime) && (Clockout < 5)) {
-        HrsAsleepBeforeMidnight = time.Midnight - ClockIn;
-    }
-    else if (((ClockIn >= 17) && (ClockIn < BedTime)) && (Clockout <= 4 )) {
-      HrsAsleepBeforeMidnight = time.Midnight - BedTime;
-    } 
-    else if ((ClockIn >= 17) && (ClockIn < BedTime) && (Clockout < time.Midnight) &&(Clockout > BedTime)) {
-        HrsAsleepBeforeMidnight = Clockout - BedTime;
-    }
-    else if ((ClockIn > BedTime) && (Clockout > BedTime) && (ClockIn > 4) && (Clockout > 4)) {
-        HrsAsleepBeforeMidnight = Clockout - ClockIn;
-    }
-    let HrsAfterMidnight;
-    if (Clockout > 4) {
-        HrsAfterMidnight  = 0;
-    }
-    else if (ClockIn < 5){
-        HrsAfterMidnight = Clockout - ClockIn
-    }
-    else{
-         HrsAfterMidnight = Clockout;
-    }
+    BedTime > 24 && ClockIn < 24 && Clockout > 24 ? BeforeBed = time.Midnight - ClockIn :
+    ClockIn > BedTime || ClockIn > 24 ? BeforeBed = 0 :
+    Clockout < BedTime && Clockout < 24 ? BeforeBed = Clockout - ClockIn :
+    ClockIn < BedTime && Clockout > BedTime && ClockIn < time.Midnight ? BeforeBed = BedTime - ClockIn : null
+
+    let HrsBeforeBed = Math.round(BeforeBed)
+    ClockIn > 24 || BedTime > 24 || Clockout < BedTime ?  HrsAsleepBeforeMidnight = 0 :
+    ClockIn > BedTime && Clockout > 24 ? HrsAsleepBeforeMidnight = time.Midnight - ClockIn :
+    ClockIn >= 17 && ClockIn < BedTime && Clockout > 24 ?  HrsAsleepBeforeMidnight = time.Midnight - BedTime :
+    ClockIn >= 17 && ClockIn < BedTime && Clockout < time.Midnight ? HrsAsleepBeforeMidnight = Clockout - BedTime :
+    ClockIn > BedTime && Clockout < 24 ? HrsAsleepBeforeMidnight = Clockout - ClockIn : null
+    
+    Clockout < 24 ? HrsAfterMidnight  = 0 :
+    ClockIn > 24 ? HrsAfterMidnight = Clockout - ClockIn :
+    Clockout > 24 && ClockIn < 24 ? HrsAfterMidnight = Clockout - 24 : null
+
     const EarnedBeforeBed = HrsBeforeBed * Pay.StartPay
     const EarnedBeforeMidnight = HrsAsleepBeforeMidnight * Pay.AfterBedPay
     const EarnedAfterMidnight = HrsAfterMidnight * Pay.AfterMidnightPay
